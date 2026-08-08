@@ -1,0 +1,5 @@
+# Marks this project as its own pnpm workspace root so installs stay local,
+# and allows better-sqlite3 to run its native build script.
+packages: []
+onlyBuiltDependencies:
+  - better-sqlite3

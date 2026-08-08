@@ -1,0 +1,92 @@
+/*
+ * toklume dashboard — ledger, not analytics.
+ *
+ * The visual language borrows from accounting ledgers and terminal output:
+ * this is a local, append-only record of machine work, not a cloud product.
+ * Fonts are system stacks only — the page makes zero network requests.
+ */
+
+:root {
+  /* Ink on paper */
+  --paper: #f7f4ed;
+  --paper-2: #efeade;
+  --rule: #d9d2c2;
+  --rule-strong: #b9b09a;
+  --ink: #12100e;
+  --ink-2: #4a443b;
+  --ink-3: #7d7565;
+
+  /* Ledger conventions: green credits, red debits */
+  --credit: #1f6f5c;
+  --debit: #a6432b;
+  /* Cache reads dominate volume but cost almost nothing — their own muted tone */
+  --cache: #8a7b5c;
+  --accent: #1f6f5c;
+
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --gap: clamp(1rem, 2.5vw, 2rem);
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #12100e;
+    --paper-2: #1b1815;
+    --rule: #322d27;
+    --rule-strong: #4d463d;
+    --ink: #f2eee5;
+    --ink-2: #bdb5a6;
+    --ink-3: #8c8375;
+
+    --credit: #5fbfa3;
+    --debit: #e08065;
+    --cache: #b09a72;
+    --accent: #5fbfa3;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numbers are the content, so the data face leads. */
+.num,
+th,
+td {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "updated": "2026-08-08",
+  "note": "USD per million tokens. Bundled and versioned in git; toklume never fetches pricing. Models are matched by longest prefix, so dated variants resolve to their base entry.",
+  "models": {
+    "claude-opus-4": { "input": 15.0, "output": 75.0, "cache_write": 18.75, "cache_read": 1.5 },
+    "claude-opus-4-1": { "input": 15.0, "output": 75.0, "cache_write": 18.75, "cache_read": 1.5 },
+    "claude-opus-4-5": { "input": 5.0, "output": 25.0, "cache_write": 6.25, "cache_read": 0.5 },
+    "claude-opus-4-8": { "input": 5.0, "output": 25.0, "cache_write": 6.25, "cache_read": 0.5 },
+    "claude-opus-5": { "input": 5.0, "output": 25.0, "cache_write": 6.25, "cache_read": 0.5 },
+    "claude-sonnet-4": { "input": 3.0, "output": 15.0, "cache_write": 3.75, "cache_read": 0.3 },
+    "claude-sonnet-4-5": { "input": 3.0, "output": 15.0, "cache_write": 3.75, "cache_read": 0.3 },
+    "claude-sonnet-5": { "input": 3.0, "output": 15.0, "cache_write": 3.75, "cache_read": 0.3 },
+    "claude-3-5-haiku": { "input": 0.8, "output": 4.0, "cache_write": 1.0, "cache_read": 0.08 },
+    "claude-haiku-4-5": { "input": 1.0, "output": 5.0, "cache_write": 1.25, "cache_read": 0.1 },
+    "claude-3-5-sonnet": { "input": 3.0, "output": 15.0, "cache_write": 3.75, "cache_read": 0.3 },
+    "claude-3-opus": { "input": 15.0, "output": 75.0, "cache_write": 18.75, "cache_read": 1.5 },
+    "gpt-5": { "input": 1.25, "output": 10.0, "cache_write": 0.0, "cache_read": 0.125 },
+    "gpt-5-mini": { "input": 0.25, "output": 2.0, "cache_write": 0.0, "cache_read": 0.025 },
+    "gpt-5-nano": { "input": 0.05, "output": 0.4, "cache_write": 0.0, "cache_read": 0.005 },
+    "gpt-5-codex": { "input": 1.25, "output": 10.0, "cache_write": 0.0, "cache_read": 0.125 },
+    "gpt-4.1": { "input": 2.0, "output": 8.0, "cache_write": 0.0, "cache_read": 0.5 },
+    "gpt-4.1-mini": { "input": 0.4, "output": 1.6, "cache_write": 0.0, "cache_read": 0.1 },
+    "gpt-4o": { "input": 2.5, "output": 10.0, "cache_write": 0.0, "cache_read": 1.25 },
+    "gpt-4o-mini": { "input": 0.15, "output": 0.6, "cache_write": 0.0, "cache_read": 0.075 },
+    "o3": { "input": 2.0, "output": 8.0, "cache_write": 0.0, "cache_read": 0.5 },
+    "o4-mini": { "input": 1.1, "output": 4.4, "cache_write": 0.0, "cache_read": 0.275 }
+  }
+}

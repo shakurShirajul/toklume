@@ -1,0 +1,6 @@
+{"timestamp":"2026-05-02T09:00:00.000Z","type":"session_meta","payload":{"id":"01960000-bbbb-7000-8000-000000000002","timestamp":"2026-05-02T09:00:00.000Z","cwd":"/home/dev/resetproj","originator":"codex_cli","cli_version":"0.100.0"}}
+{"timestamp":"2026-05-02T09:00:01.000Z","type":"turn_context","payload":{"turn_id":"t1","cwd":"/home/dev/resetproj","model":"gpt-5-codex"}}
+{"timestamp":"2026-05-02T09:00:10.000Z","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"input_tokens":5000,"cached_input_tokens":1000,"output_tokens":500,"reasoning_output_tokens":200,"total_tokens":5500}}}}
+{"timestamp":"2026-05-02T09:01:00.000Z","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"input_tokens":9000,"cached_input_tokens":2000,"output_tokens":900,"reasoning_output_tokens":350,"total_tokens":9900}}}}
+{"timestamp":"2026-05-02T09:02:00.000Z","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"input_tokens":800,"cached_input_tokens":100,"output_tokens":60,"reasoning_output_tokens":20,"total_tokens":860}}}}
+{"timestamp":"2026-05-02T09:03:00.000Z","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"input_tokens":2200,"cached_input_tokens":400,"output_tokens":180,"reasoning_output_tokens":70,"total_tokens":2380}}}}

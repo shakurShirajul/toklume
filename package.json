@@ -1,0 +1,50 @@
+{
+  "name": "toklume",
+  "version": "0.1.0",
+  "description": "A local SQLite database of your AI coding agent token usage — Claude Code, Codex, OpenCode.",
+  "license": "MIT",
+  "author": "Shirajul Islam Shakur",
+  "type": "module",
+  "bin": {
+    "toklume": "dist/cli/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "data",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "web:build": "pnpm --dir web build"
+  },
+  "keywords": [
+    "claude-code",
+    "codex",
+    "opencode",
+    "tokens",
+    "usage",
+    "sqlite",
+    "cli"
+  ],
+  "packageManager": "pnpm@10.20.0",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "citty": "^0.1.6",
+    "cli-table3": "^0.6.5",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.13.1",
+    "tsdown": "^0.22.14",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}
