@@ -3,49 +3,68 @@
  *
  * The visual language borrows from accounting ledgers and terminal output:
  * this is a local, append-only record of machine work, not a cloud product.
- * Fonts are system stacks only — the page makes zero network requests.
+ * The dashboard still makes no network requests of its own besides loading
+ * the Fira Code webfont; all data comes from the same-origin local API.
  */
 
 :root {
-  /* Ink on paper */
-  --paper: #f7f4ed;
-  --paper-2: #efeade;
-  --rule: #d9d2c2;
-  --rule-strong: #b9b09a;
-  --ink: #12100e;
-  --ink-2: #4a443b;
-  --ink-3: #7d7565;
+  /* Ink on paper (dark, default) */
+  --paper: #131118;
+  --paper-2: #191623;
+  --paper-3: #201c2b;
+  --rule: #2a2536;
+  --rule-strong: #4a4260;
+  --ink: #e9e6f0;
+  --ink-2: #aaa3bd;
+  --ink-3: #726a87;
 
-  /* Ledger conventions: green credits, red debits */
-  --credit: #1f6f5c;
-  --debit: #a6432b;
-  /* Cache reads dominate volume but cost almost nothing — their own muted tone */
-  --cache: #8a7b5c;
-  --accent: #1f6f5c;
+  --accent: #a78bfa;
+  --accent-2: #8b6cf0;
+  --accent-dim: rgba(167, 139, 250, 0.13);
 
-  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace;
-  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Token-type palette, shared by the trend chart, cache band and session bars */
+  --t-input: #7f9fdb;
+  --t-output: #5fbf9f;
+  --t-cache-write: #c8a05e;
+  --t-cache-read: #a78bfa;
+  --t-reasoning: #d78fae;
+
+  --credit: var(--t-output);
+  --debit: #e0806a;
+  --cache: var(--t-cache-read);
+
+  --mono: "Fira Code", ui-monospace, "SF Mono", "Cascadia Mono", "DejaVu Sans Mono", Menlo, Consolas,
+    monospace;
+  --sans: var(--mono);
 
   --gap: clamp(1rem, 2.5vw, 2rem);
 
-  color-scheme: light dark;
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #12100e;
-    --paper-2: #1b1815;
-    --rule: #322d27;
-    --rule-strong: #4d463d;
-    --ink: #f2eee5;
-    --ink-2: #bdb5a6;
-    --ink-3: #8c8375;
+[data-theme='light'] {
+  --paper: #f6f5f8;
+  --paper-2: #edebf2;
+  --paper-3: #e4e1ec;
+  --rule: #d8d4e2;
+  --rule-strong: #a79fbb;
+  --ink: #201c2b;
+  --ink-2: #544d68;
+  --ink-3: #847c99;
 
-    --credit: #5fbfa3;
-    --debit: #e08065;
-    --cache: #b09a72;
-    --accent: #5fbfa3;
-  }
+  --accent: #6d4fd6;
+  --accent-2: #5936c9;
+  --accent-dim: rgba(109, 79, 214, 0.1);
+
+  --t-input: #3d6ab5;
+  --t-output: #1f8a68;
+  --t-cache-write: #96702c;
+  --t-cache-read: #6d4fd6;
+  --t-reasoning: #b05c85;
+
+  --debit: #b8492e;
+
+  color-scheme: light;
 }
 
 * {
@@ -61,8 +80,10 @@ body {
 body {
   background: var(--paper);
   color: var(--ink);
-  font: 15px/1.55 var(--sans);
+  font: 13px/1.5 var(--mono);
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.15s, color 0.15s;
 }
 
 /* Numbers are the content, so the data face leads. */
@@ -75,11 +96,24 @@ td {
 
 a {
   color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent-2);
+}
+
+::selection {
+  background: var(--accent-dim);
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+textarea {
+  caret-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

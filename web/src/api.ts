@@ -71,8 +71,36 @@ export interface QueryResult {
   totalRows?: number
 }
 
+// Mirrors ToolSyncResult/SyncResult in ../../src/core/sync.ts. Not imported
+// directly: the web/ package builds independently of the CLI/server package,
+// and that module pulls in Node-only dependencies. Keep the two in sync by hand.
+export interface ToolSyncResult {
+  tool: string
+  detected: boolean
+  skipped: boolean
+  reason?: string
+  filesScanned?: number
+  filesSkipped?: number
+  newEvents?: number
+  duplicatesIgnored?: number
+  malformedLines?: number
+  failures?: { sourceFile: string; error: string }[]
+}
+
+export interface SyncResult {
+  elapsedMs: number
+  tools: ToolSyncResult[]
+}
+
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(path)
+  const body = (await res.json()) as T & { error?: string }
+  if (!res.ok) throw new Error(body.error ?? `Request failed (${res.status})`)
+  return body
+}
+
+async function post<T>(path: string): Promise<T> {
+  const res = await fetch(path, { method: 'POST' })
   const body = (await res.json()) as T & { error?: string }
   if (!res.ok) throw new Error(body.error ?? `Request failed (${res.status})`)
   return body
@@ -103,6 +131,10 @@ export function runQuery(sql: string): Promise<QueryResult> {
   return get<QueryResult>(`/api/query?sql=${encodeURIComponent(sql)}`)
 }
 
+export function triggerSync(): Promise<SyncResult> {
+  return post<SyncResult>('/api/sync')
+}
+
 /* Formatting helpers ------------------------------------------------------ */
 
 export function formatCount(n: number): string {
@@ -117,12 +149,17 @@ export function formatCompact(n: number): string {
   return `${(n / 1_000_000_000).toFixed(2)}B`
 }
 
-/** Unknown pricing renders as an em dash — never as $0. */
-export function formatCost(cost: number | null): string {
+/**
+ * Unknown pricing renders as an em dash — never as $0.
+ *
+ * `approx` marks a total that mixes priced and unpriced rows: the number is
+ * a floor, not the real total, so it renders as "≥ $x.xx" rather than a
+ * bare dollar figure that looks exact.
+ */
+export function formatCost(cost: number | null, approx = false): string {
   if (cost === null) return '—'
-  if (cost === 0) return '$0.00'
-  if (cost < 0.01) return `$${cost.toFixed(4)}`
-  return `$${cost.toFixed(2)}`
+  const s = cost === 0 ? '$0.00' : cost < 0.01 ? `$${cost.toFixed(4)}` : `$${cost.toFixed(2)}`
+  return approx ? `≥ ${s}` : s
 }
 
 export function formatTs(unixSeconds: number): string {

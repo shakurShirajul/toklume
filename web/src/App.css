@@ -1,29 +1,43 @@
 /* Layout ------------------------------------------------------------------ */
 
 .shell {
-  max-width: 78rem;
+  max-width: 80rem;
   margin: 0 auto;
-  padding: var(--gap);
+  padding: 1.25rem 1.75rem 3rem;
 }
 
-/* Masthead ---------------------------------------------------------------- */
+.spacer {
+  flex: 1;
+}
+
+/* Masthead ------------------------------------------------------------------ */
 
 .masthead {
   border-bottom: 2px solid var(--ink);
   padding-bottom: 0.75rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.5rem 1.25rem;
+  gap: 1.5rem;
 }
 
 .wordmark {
-  font-family: var(--mono);
-  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+  font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   margin: 0;
+}
+
+.wordmark-link {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+  letter-spacing: inherit;
 }
 
 .wordmark .dim {
@@ -31,47 +45,39 @@
   font-weight: 400;
 }
 
-.tagline {
-  font-size: 0.8rem;
-  color: var(--ink-2);
-  margin: 0;
-  flex: 1 1 14rem;
-}
-
-.masthead-stat {
+.theme-toggle {
   font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--ink-3);
-  text-align: right;
+  font-size: 0.7rem;
+  border: 1px solid var(--rule-strong);
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: 0.25rem 0.6rem;
   white-space: nowrap;
 }
 
-.masthead-stat b {
-  color: var(--ink);
-  font-weight: 700;
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
-/* Tabs -------------------------------------------------------------------- */
+/* Tabs ---------------------------------------------------------------------- */
 
 .tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 0;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 1.5rem;
 }
 
 .tab {
   appearance: none;
-  background: none;
   border: 0;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  padding: 0.55rem 0.9rem;
-  font-family: var(--mono);
-  font-size: 0.82rem;
-  color: var(--ink-3);
   cursor: pointer;
+  padding: 0.32rem 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  background: transparent;
+  color: var(--ink-3);
 }
 
 .tab:hover {
@@ -79,57 +85,202 @@
 }
 
 .tab[aria-selected='true'] {
-  color: var(--ink);
-  border-bottom-color: var(--ink);
-  font-weight: 700;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
 }
 
-/* Signature: the cache-ratio ledger band ---------------------------------- */
+/* Meta strip ------------------------------------------------------------------ */
 
+.meta-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.68rem;
+  color: var(--ink-3);
+}
+
+.meta-strip b {
+  color: var(--ink-2);
+  font-weight: 400;
+}
+
+.meta-tools {
+  display: inline-flex;
+  gap: 0.6rem;
+}
+
+.meta-tool {
+  color: var(--ink-3);
+}
+
+.meta-tool.ok {
+  color: var(--credit);
+}
+
+/* Filter bar ------------------------------------------------------------------ */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0 0;
+}
+
+.filter-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--rule-strong);
+}
+
+.seg {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  border: 0;
+  border-left: 1px solid var(--rule-strong);
+  margin-left: -1px;
+  cursor: pointer;
+  padding: 0.3rem 0.75rem;
+  background: transparent;
+  color: var(--ink-3);
+}
+
+.seg:first-child {
+  border-left: 0;
+  margin-left: 0;
+}
+
+.seg:hover {
+  color: var(--ink);
+}
+
+.seg.on {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* Charts row ----------------------------------------------------------------- */
+
+.chart-row {
+  display: grid;
+  grid-template-columns: minmax(380px, 1fr) minmax(380px, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 56rem) {
+  .chart-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card,
 .band-block {
   border: 1px solid var(--rule);
   background: var(--paper-2);
-  padding: 1rem 1.1rem 1.15rem;
-  margin-bottom: 1.5rem;
+  padding: 0.9rem 1rem 0.75rem;
+  min-width: 0;
 }
 
+.chart-head,
 .band-head {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
-  gap: 0.5rem;
-  margin-bottom: 0.15rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
+.chart-title,
 .band-title {
-  font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-2);
-  margin: 0;
 }
 
-.band-lede {
-  font-size: 0.82rem;
+.chart-caption {
+  font-size: 0.68rem;
   color: var(--ink-3);
-  margin: 0 0 0.85rem;
-  max-width: 46rem;
 }
+
+.chart-legend,
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  margin-top: 0.65rem;
+  font-size: 0.65rem;
+  color: var(--ink-3);
+}
+
+.chart-legend span,
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.chart-legend i,
+.swatch {
+  width: 0.5rem;
+  height: 0.5rem;
+  display: inline-block;
+}
+
+/* Trend chart ----------------------------------------------------------------- */
+
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  margin-top: 0.75rem;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.trend-bar {
+  flex: 1;
+  min-width: 3px;
+  display: flex;
+  flex-direction: column-reverse;
+  height: 100%;
+}
+
+.trend-seg {
+  width: 100%;
+}
+
+.trend-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  color: var(--ink-3);
+  margin-top: 0.25rem;
+}
+
+/* Cache band ------------------------------------------------------------------ */
 
 .band-rows {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.2rem;
+  margin-top: 0.75rem;
 }
 
 .band-row {
   display: grid;
-  grid-template-columns: 5.5rem 1fr 4.5rem;
+  grid-template-columns: 2.75rem 1fr 3.6rem;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.65rem;
 }
 
 .band-date {
@@ -138,7 +289,7 @@
 
 .band-track {
   display: flex;
-  height: 0.85rem;
+  height: 0.7rem;
   background: var(--paper);
   border: 1px solid var(--rule);
   overflow: hidden;
@@ -149,15 +300,15 @@
 }
 
 .band-seg.cache {
-  background: var(--cache);
+  background: var(--t-cache-read);
 }
 
 .band-seg.fresh {
-  background: var(--credit);
+  background: var(--t-input);
 }
 
 .band-seg.out {
-  background: var(--debit);
+  background: var(--t-output);
 }
 
 .band-pct {
@@ -165,57 +316,444 @@
   color: var(--ink-2);
 }
 
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.15rem 1rem;
-  margin-top: 0.85rem;
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  color: var(--ink-3);
-}
-
-.legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.swatch {
-  width: 0.7rem;
-  height: 0.7rem;
-  border: 1px solid var(--rule-strong);
-}
-
 .swatch.cache {
-  background: var(--cache);
+  background: var(--t-cache-read);
 }
 
 .swatch.fresh {
-  background: var(--credit);
+  background: var(--t-input);
 }
 
 .swatch.out {
-  background: var(--debit);
+  background: var(--t-output);
 }
 
-/* Tables ------------------------------------------------------------------ */
+/* By-tool comparison ----------------------------------------------------------- */
+
+.bytool {
+  margin-top: 1.5rem;
+  border: 1px solid var(--rule);
+}
+
+.bytool-head,
+.bytool-row {
+  display: grid;
+  grid-template-columns: 9rem 1fr 6.5rem 6.5rem 5rem 4rem;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+}
+
+.bytool-head {
+  border-bottom: 1px solid var(--rule-strong);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.bytool-row {
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.75rem;
+}
+
+.bytool-row:last-child {
+  border-bottom: 0;
+}
+
+.bytool-track {
+  display: flex;
+  height: 0.55rem;
+  background: var(--paper-2);
+}
+
+.bytool-bar {
+  background: var(--accent);
+}
+
+@media (max-width: 40rem) {
+  .bytool-head,
+  .bytool-row {
+    grid-template-columns: 6rem 1fr 4.5rem;
+  }
+  .bytool-head span:nth-child(4),
+  .bytool-row span:nth-child(4),
+  .bytool-head span:nth-child(6),
+  .bytool-row span:nth-child(6) {
+    display: none;
+  }
+}
+
+/* Dense grid tables (daily + sessions) ------------------------------------------ */
 
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--rule);
   background: var(--paper-2);
+  margin-top: 1.5rem;
 }
+
+.daily-grid-inner {
+  min-width: 58rem;
+}
+
+.sessions-grid-inner {
+  min-width: 62rem;
+}
+
+.grid-head,
+.grid-row {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.3rem 0.75rem;
+  align-items: baseline;
+}
+
+.grid-head {
+  border-bottom: 1px solid var(--rule-strong);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.grid-row {
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.75rem;
+}
+
+.grid-row:hover {
+  background: var(--paper-3);
+}
+
+.grid-row.first {
+  border-top: 1px solid var(--rule-strong);
+  margin-top: -1px;
+}
+
+.grid-row.total {
+  border-top: 2px solid var(--ink);
+  border-bottom: 0;
+  font-weight: 600;
+}
+
+.daily-cols {
+  grid-template-columns: 5.75rem 6.75rem repeat(5, minmax(4.6rem, 1fr)) minmax(5.25rem, 1fr) 6rem;
+}
+
+.session-cols {
+  grid-template-columns: 1.5rem 7.5rem 6.5rem 9.4rem 7.6rem 4.75rem repeat(2, minmax(4.75rem, 1fr)) 5rem 5.75rem;
+  align-items: center;
+}
+
+.grid-row.clickable {
+  cursor: pointer;
+}
+
+.right {
+  text-align: right;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.cache-read {
+  color: var(--t-cache-read);
+}
+
+.ink2 {
+  color: var(--ink-2);
+}
+
+/* Session detail expando ----------------------------------------------------- */
+
+.session-detail {
+  border-bottom: 1px solid var(--rule);
+  border-left: 2px solid var(--accent);
+  background: var(--paper-3);
+  padding: 0.9rem 1.25rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.session-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2rem;
+  font-size: 0.68rem;
+  color: var(--ink-3);
+}
+
+.session-detail-meta b {
+  color: var(--ink-2);
+  font-weight: 400;
+}
+
+.session-detail-bars {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 42rem;
+}
+
+.session-bar-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  font-size: 0.68rem;
+}
+
+.session-bar-track {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 0.55rem;
+  flex: 1;
+  background: var(--paper);
+}
+
+.session-bar-fill {
+  height: 100%;
+}
+
+.session-bar-val {
+  width: 4rem;
+  text-align: right;
+  color: var(--ink-2);
+}
+
+.limit-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  color: var(--ink-3);
+}
+
+.limit-select select {
+  padding: 0.15rem 0.35rem;
+  font-size: 0.68rem;
+}
+
+.cost {
+  color: var(--ink);
+}
+
+.muted {
+  color: var(--ink-3);
+}
+
+.footnotes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.68rem;
+  color: var(--ink-3);
+}
+
+/* Inputs -------------------------------------------------------------------- */
+
+input,
+select,
+textarea {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+}
+
+button.action {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4rem 1.1rem;
+  background: var(--accent);
+  color: var(--paper);
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+button.action:hover {
+  background: var(--accent-2);
+}
+
+button.action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* SQL console ------------------------------------------------------------- */
+
+.console-layout {
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 48rem) {
+  .console-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.recipes-panel {
+  border: 1px solid var(--rule);
+}
+
+.recipes-head {
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid var(--rule-strong);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.recipe {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: var(--mono);
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  color: var(--ink);
+}
+
+.recipe:hover {
+  background: var(--paper-3);
+}
+
+.recipe.on {
+  background: var(--accent-dim);
+}
+
+.recipe.on .recipe-label {
+  color: var(--accent);
+}
+
+.recipe-label {
+  display: block;
+  font-size: 0.73rem;
+}
+
+.recipe-desc {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--ink-3);
+  margin-top: 1px;
+}
+
+.recipes-foot {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.65rem;
+  color: var(--ink-3);
+}
+
+.console-editor-col {
+  min-width: 0;
+}
+
+.sql-editor {
+  position: relative;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-2);
+}
+
+.sql-highlight,
+textarea.sql {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 8rem;
+  box-sizing: border-box;
+}
+
+.sql-highlight {
+  color: var(--ink);
+}
+
+textarea.sql {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  resize: none;
+  overflow: hidden;
+}
+
+.sql-keyword {
+  color: var(--accent);
+}
+
+.sql-string {
+  color: var(--t-output);
+}
+
+.sql-number {
+  color: var(--t-cache-write);
+}
+
+.sql-comment {
+  color: var(--ink-3);
+}
+
+.sql-write {
+  color: var(--debit);
+}
+
+.console-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+
+.sql-error {
+  margin-top: 0.9rem;
+  border: 1px solid var(--debit);
+  border-left: 3px solid var(--debit);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.75rem;
+  color: var(--debit);
+  background: var(--paper-2);
+}
+
+/* Result table (dynamic columns) ------------------------------------------- */
 
 table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
 }
 
 th,
 td {
-  padding: 0.4rem 0.7rem;
+  padding: 0.35rem 0.65rem;
   text-align: right;
   white-space: nowrap;
   border-bottom: 1px solid var(--rule);
@@ -233,7 +771,7 @@ thead th {
   top: 0;
   background: var(--paper-2);
   border-bottom: 1px solid var(--rule-strong);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-2);
@@ -241,126 +779,17 @@ thead th {
 }
 
 tbody tr:hover td {
-  background: var(--paper);
+  background: var(--paper-3);
 }
 
 tbody tr:last-child td {
   border-bottom: 0;
 }
 
-tfoot td {
-  border-top: 2px solid var(--ink);
-  border-bottom: 0;
-  font-weight: 700;
-  background: var(--paper-2);
-}
-
-.cost {
-  color: var(--debit);
-}
-
-.muted {
-  color: var(--ink-3);
-}
-
-/* Filters ----------------------------------------------------------------- */
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  align-items: flex-end;
-  margin-bottom: 1rem;
-}
-
-.field {
-  display: grid;
-  gap: 0.2rem;
-}
-
-.field label {
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-input,
-select,
-textarea {
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  padding: 0.35rem 0.5rem;
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--rule-strong);
-  border-radius: 0;
-}
-
-button.action {
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  padding: 0.4rem 0.9rem;
-  background: var(--ink);
-  color: var(--paper);
-  border: 1px solid var(--ink);
-  border-radius: 0;
-  cursor: pointer;
-}
-
-button.action:hover {
-  background: var(--ink-2);
-  border-color: var(--ink-2);
-}
-
-button.action:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* SQL console ------------------------------------------------------------- */
-
-.console-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-textarea.sql {
-  width: 100%;
-  min-height: 7rem;
-  resize: vertical;
-  line-height: 1.5;
-  tab-size: 2;
-}
-
-.console-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  align-items: center;
-}
-
-.recipes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.recipe {
-  font-family: var(--mono);
+.note {
   font-size: 0.7rem;
-  padding: 0.25rem 0.6rem;
-  background: var(--paper-2);
-  color: var(--ink-2);
-  border: 1px solid var(--rule);
-  border-radius: 0;
-  cursor: pointer;
-}
-
-.recipe:hover {
-  border-color: var(--ink-3);
-  color: var(--ink);
+  color: var(--ink-3);
+  margin: 0.75rem 0 0;
 }
 
 .error {
@@ -370,23 +799,7 @@ textarea.sql {
   border: 1px solid var(--debit);
   background: color-mix(in srgb, var(--debit) 8%, transparent);
   padding: 0.6rem 0.8rem;
-}
-
-/* Notes and empty states -------------------------------------------------- */
-
-.note {
-  font-size: 0.75rem;
-  color: var(--ink-3);
-  margin: 0.9rem 0 0;
-}
-
-.warn {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--ink-2);
-  border-left: 3px solid var(--cache);
-  padding: 0.4rem 0 0.4rem 0.7rem;
-  margin: 1rem 0 0;
+  margin-top: 1rem;
 }
 
 .empty {
@@ -394,21 +807,21 @@ textarea.sql {
   padding: 2.5rem 1.5rem;
   text-align: center;
   color: var(--ink-3);
-  font-family: var(--mono);
   font-size: 0.82rem;
+  margin-top: 1.5rem;
 }
 
 .empty code {
-  color: var(--ink);
-  background: var(--paper-2);
+  color: var(--accent);
+  background: var(--paper-3);
   padding: 0.15em 0.4em;
 }
 
 .footer {
-  margin-top: 2.5rem;
-  padding-top: 0.9rem;
+  margin-top: 3rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--rule);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: var(--ink-3);
   display: flex;
   flex-wrap: wrap;
@@ -418,7 +831,7 @@ textarea.sql {
 
 @media (max-width: 34rem) {
   .band-row {
-    grid-template-columns: 4.5rem 1fr 3.5rem;
-    font-size: 0.66rem;
+    grid-template-columns: 3.75rem 1fr 3rem;
+    font-size: 0.6rem;
   }
 }

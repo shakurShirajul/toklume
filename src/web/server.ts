@@ -1,4 +1,4 @@
-import { createServer, type ServerResponse } from 'node:http'
+import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
 import { readFileSync, existsSync, statSync } from 'node:fs'
 import { dirname, join, normalize, extname } from 'node:path'
 import { openDb, type Db } from '../db/index.js'
@@ -8,6 +8,7 @@ import { COST_CAPTION, loadPricing } from '../core/pricing.js'
 import { errorMessage, findUpward } from '../core/paths.js'
 import { detectSources, type DetectedSource } from '../parsers/registry.js'
 import { distinctModels, eventCount, lastSyncAt } from '../db/queries.js'
+import { runSync } from '../core/sync.js'
 
 export interface WebServerOptions {
   dbPath?: string | undefined
@@ -24,6 +25,7 @@ const MIME: Record<string, string> = {
   '.png': 'image/png',
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
 }
 
 /**
@@ -45,13 +47,23 @@ export function createWebServer(options: WebServerOptions) {
   const sources = detectSources()
 
   const server = createServer((req, res) => {
-    // Reject anything but GET: the dashboard is strictly read-only.
+    const url = new URL(req.url ?? '/', `http://${options.host}:${options.port}`)
+
+    // The one write path: triggering a sync from the dashboard's sync button.
+    // Everything else stays strictly read-only.
+    if (url.pathname === '/api/sync') {
+      if (req.method !== 'POST') {
+        sendJson(res, 405, { error: 'Only POST is supported' })
+        return
+      }
+      handleSync(req, res, options.dbPath)
+      return
+    }
+
     if (req.method !== 'GET') {
       sendJson(res, 405, { error: 'Only GET is supported' })
       return
     }
-
-    const url = new URL(req.url ?? '/', `http://${options.host}:${options.port}`)
 
     try {
       if (url.pathname.startsWith('/api/')) {
@@ -140,6 +152,36 @@ function handleApi(
   } finally {
     db.close()
   }
+}
+
+/**
+ * Run `toklume sync` on demand from the dashboard's sync button.
+ *
+ * This is the only endpoint that opens a writable handle. It reuses the same
+ * `runSync` path as the CLI command, so a browser-triggered sync behaves
+ * identically to running `toklume sync` yourself.
+ */
+function handleSync(req: IncomingMessage, res: ServerResponse, dbPath: string | undefined): void {
+  // No request body is expected; draining it lets the connection close cleanly.
+  req.resume()
+  req.on('end', () => {
+    let db: Db
+    try {
+      db = openDb({ dbPath })
+    } catch (err) {
+      sendJson(res, 503, { error: errorMessage(err) })
+      return
+    }
+
+    try {
+      const result = runSync(db)
+      sendJson(res, 200, result)
+    } catch (err) {
+      sendJson(res, 500, { error: errorMessage(err) })
+    } finally {
+      db.close()
+    }
+  })
 }
 
 /**
