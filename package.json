@@ -5,6 +5,14 @@
   "license": "MIT",
   "author": "Shirajul Islam Shakur",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shakurShirajul/toklume.git"
+  },
+  "homepage": "https://github.com/shakurShirajul/toklume#readme",
+  "bugs": {
+    "url": "https://github.com/shakurShirajul/toklume/issues"
+  },
   "bin": {
     "toklume": "dist/cli/index.js"
   },
@@ -14,6 +22,7 @@
   "files": [
     "dist",
     "data",
+    "web/dist",
     "README.md",
     "LICENSE"
   ],
@@ -22,7 +31,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "web:build": "pnpm --dir web build"
+    "web:build": "pnpm --dir web install && pnpm --dir web build",
+    "prepublishOnly": "pnpm build && pnpm web:build"
   },
   "keywords": [
     "claude-code",
