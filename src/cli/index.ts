@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+import { readFileSync } from 'node:fs'
 import { defineCommand, runCommand, showUsage, type CommandDef } from 'citty'
 import pc from 'picocolors'
-import { errorMessage } from '../core/paths.js'
+import { errorMessage, findUpward } from '../core/paths.js'
 import { syncCommand } from './commands/sync.js'
 import { dailyCommand } from './commands/daily.js'
 import { sessionsCommand } from './commands/sessions.js'
@@ -9,7 +10,15 @@ import { queryCommand } from './commands/query.js'
 import { doctorCommand } from './commands/doctor.js'
 import { webCommand } from './commands/web.js'
 
-const VERSION = '0.1.0'
+const VERSION = readVersion()
+
+/** Reads the package's own version so `--version` never drifts from what's published. */
+function readVersion(): string {
+  const pkgPath = findUpward(import.meta.url, 'package.json')
+  if (!pkgPath) return '0.0.0'
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as { version?: string }
+  return pkg.version ?? '0.0.0'
+}
 
 const subCommands = {
   sync: syncCommand,
