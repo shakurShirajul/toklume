@@ -1,4 +1,5 @@
-import { formatCompact, type DailyRow } from './api'
+import { formatCompact } from './api'
+import type { DayTotals } from './aggregate'
 
 /**
  * The cache-ratio ledger band.
@@ -8,28 +9,21 @@ import { formatCompact, type DailyRow } from './api'
  * proportional band per day makes that legible at a glance, and makes an
  * unusually cache-cold day obvious without reading a number.
  */
-export function CacheBand({ rows }: { rows: DailyRow[] }) {
-  // Fold the per-tool rows into one row per day.
-  const byDay = new Map<string, { cache: number; fresh: number; out: number }>()
-  for (const row of rows) {
-    const day = byDay.get(row.date) ?? { cache: 0, fresh: 0, out: 0 }
-    day.cache += row.cacheReadTokens
-    day.fresh += row.inputTokens + row.cacheWriteTokens
-    day.out += row.outputTokens + row.reasoningTokens
-    byDay.set(row.date, day)
-  }
-
-  const days = [...byDay.entries()]
-    .sort((a, b) => b[0].localeCompare(a[0]))
-    .slice(0, 21)
-    .reverse()
-
+export function CacheBand({ days: allDays }: { days: DayTotals[] }) {
+  const days = allDays.slice(-21)
   if (days.length === 0) return null
 
-  const overall = days.reduce(
-    (acc, [, d]) => ({
-      cache: acc.cache + d.cache,
-      total: acc.total + d.cache + d.fresh + d.out,
+  const bands = days.map((d) => ({
+    date: d.date,
+    cache: d.cacheReadTokens,
+    fresh: d.inputTokens + d.cacheWriteTokens,
+    out: d.outputTokens + d.reasoningTokens,
+  }))
+
+  const overall = bands.reduce(
+    (acc, b) => ({
+      cache: acc.cache + b.cache,
+      total: acc.total + b.cache + b.fresh + b.out,
     }),
     { cache: 0, total: 0 },
   )
@@ -38,33 +32,31 @@ export function CacheBand({ rows }: { rows: DailyRow[] }) {
   return (
     <section className="band-block">
       <div className="band-head">
-        <h2 className="band-title">Where the tokens actually go</h2>
-        <span className="band-title">{overallPct.toFixed(1)}% cached</span>
+        <span className="band-title">cache band · read vs fresh</span>
+        <span className="chart-caption accent" style={{ fontWeight: 600 }}>
+          {overallPct.toFixed(1)}% cached
+        </span>
       </div>
-      <p className="band-lede">
-        Each band is one day, split by proportion. Cache reads are billed at a fraction of fresh
-        input, so a wide sand-coloured band is cheap volume — not spend.
-      </p>
 
       <div className="band-rows">
-        {days.map(([date, d]) => {
-          const total = d.cache + d.fresh + d.out
+        {bands.map((b) => {
+          const total = b.cache + b.fresh + b.out
           if (total === 0) return null
           const pct = (n: number) => (n / total) * 100
-          const cachePct = pct(d.cache)
+          const cachePct = pct(b.cache)
           return (
-            <div className="band-row" key={date}>
-              <span className="band-date">{date.slice(5)}</span>
+            <div className="band-row" key={b.date}>
+              <span className="band-date">{b.date.slice(5)}</span>
               <span
                 className="band-track"
                 role="img"
-                aria-label={`${date}: ${cachePct.toFixed(0)}% cache reads, ${formatCompact(
+                aria-label={`${b.date}: ${cachePct.toFixed(0)}% cache reads, ${formatCompact(
                   total,
                 )} tokens total`}
               >
                 <span className="band-seg cache" style={{ width: `${cachePct}%` }} />
-                <span className="band-seg fresh" style={{ width: `${pct(d.fresh)}%` }} />
-                <span className="band-seg out" style={{ width: `${pct(d.out)}%` }} />
+                <span className="band-seg fresh" style={{ width: `${pct(b.fresh)}%` }} />
+                <span className="band-seg out" style={{ width: `${pct(b.out)}%` }} />
               </span>
               <span className="band-pct">{formatCompact(total)}</span>
             </div>

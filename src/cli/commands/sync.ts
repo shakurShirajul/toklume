@@ -1,9 +1,7 @@
 import { defineCommand } from 'citty'
 import pc from 'picocolors'
 import { openDb } from '../../db/index.js'
-import { Writer } from '../../db/queries.js'
-import { detectSources } from '../../parsers/registry.js'
-import { scanParser } from '../../core/scan.js'
+import { runSync } from '../../core/sync.js'
 import { printLine } from '../../output/table.js'
 import { printJson } from '../../output/json.js'
 
@@ -17,44 +15,10 @@ export const syncCommand = defineCommand({
     json: { type: 'boolean', description: 'Emit the summary as JSON' },
   },
   run({ args }) {
-    const started = Date.now()
     const db = openDb({ dbPath: args.db as string | undefined })
 
     try {
-      const writer = new Writer(db)
-      const results = []
-
-      for (const source of detectSources()) {
-        if (source.roots.length === 0) {
-          results.push({ tool: source.parser.id, detected: false })
-          continue
-        }
-
-        if (source.unsupported) {
-          results.push({
-            tool: source.parser.id,
-            detected: true,
-            skipped: true,
-            reason: source.unsupported,
-          })
-          continue
-        }
-
-        const summary = scanParser(source.parser, writer, source.files)
-        results.push({
-          tool: source.parser.id,
-          detected: true,
-          skipped: false,
-          filesScanned: summary.filesScanned,
-          filesSkipped: summary.filesSkipped,
-          newEvents: summary.inserted,
-          duplicatesIgnored: summary.duplicates,
-          malformedLines: summary.malformed,
-          failures: summary.failures,
-        })
-      }
-
-      const elapsedMs = Date.now() - started
+      const { elapsedMs, tools: results } = runSync(db)
 
       if (args.json) {
         printJson({ elapsedMs, tools: results })
