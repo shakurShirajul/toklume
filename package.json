@@ -1,6 +1,6 @@
 {
   "name": "toklume",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A local SQLite database of your AI coding agent token usage — Claude Code, Codex, OpenCode.",
   "license": "MIT",
   "author": "Shirajul Islam Shakur",

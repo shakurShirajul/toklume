@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/) (pre-1.0:
 minor versions may include breaking changes).
 
+## [0.2.1] - 2026-08-20
+
+### Fixed
+
+- `toklume --version` reported `0.1.0`. The version is now read from the
+  package's own `package.json` at runtime, so it can no longer drift from what
+  is published. (0.2.0 was published from a build that predated this fix.)
+- A missing `better-sqlite3` native binary produced a database error listing a
+  dozen attempted paths and no remedy. It is now detected and reported as what
+  it is, with the steps to fix it.
+
+### Changed
+
+- Documented the native-module install requirements: `better-sqlite3` ships
+  prebuilt binaries only up to Node 22, so Node 24+ compiles from source and
+  needs a C++ toolchain; pnpm 10+ additionally blocks that build until
+  `pnpm approve-builds -g` approves it.
+
 ## [0.2.0] - 2026-08-13
 
 ### Added
