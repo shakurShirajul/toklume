@@ -20,6 +20,20 @@ toklume daily              # see it
 
 Requires Node >= 20. First sync reads your whole history; later syncs only read what changed.
 
+> **Install it globally (`-g`), or run it with `npx`/`pnpm dlx`.** toklume is a CLI, not a
+> library. Dropping the `-g` — `npm install toklume` or `pnpm install toklume` — makes a
+> *local* install, which creates `package.json`, `node_modules/`, and a lockfile in whatever
+> directory you happen to be in. Run that from your home directory and those files land in
+> `~`. That is standard npm/pnpm behavior for any package, not something toklume does; it
+> ships no install scripts. To clean it up, delete the files the install created:
+>
+> ```bash
+> cd ~ && rm -rf node_modules package.json pnpm-lock.yaml
+> ```
+>
+> Check that `package.json` lists nothing but toklume under `dependencies` before deleting —
+> if it has a `name` or `scripts` field, it is a real project of yours, so leave it alone.
+
 ## Commands
 
 | Command | What it does |
