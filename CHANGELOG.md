@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/) (pre-1.0:
 minor versions may include breaking changes).
 
+## [0.2.2] - 2026-08-20
+
+### Fixed
+
+- Dashboard errors collapsed onto a single line, running multi-line remedies
+  together into one unusable command (`pnpm approve-builds -g pnpm add -g
+  toklume`). Error boxes now preserve line breaks, so the commands they suggest
+  can be read and copied. This missed the 0.2.1 release by minutes.
+
+### Changed
+
+- Documented how to update an existing install, including the pnpm case where
+  approving the build is not enough on its own and the package must be removed
+  and added again to force the rebuild.
+- Documented how to run a source checkout without installing it globally.
+
 ## [0.2.1] - 2026-08-20
 
 ### Fixed
