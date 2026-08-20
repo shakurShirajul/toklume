@@ -13,6 +13,30 @@ export interface OpenOptions {
 }
 
 /**
+ * A failure to load better-sqlite3's native binary, rather than a problem with
+ * the database file.
+ *
+ * better-sqlite3 ships prebuilt binaries only up to Node 22, so on newer Node
+ * it compiles at install time. When that build is skipped — pnpm 10+ blocks
+ * dependency build scripts by default — or when no compiler was available, the
+ * binding is missing and every open fails. The raw error is a wall of a dozen
+ * attempted paths that says nothing about the fix, so we detect it and explain
+ * what to do instead.
+ */
+function bindingsError(err: unknown): string | null {
+  if (!/Could not locate the bindings file/i.test(errorMessage(err))) return null
+  return (
+    `toklume's SQLite driver (better-sqlite3) has no compiled binary for Node ${process.versions.node}.\n` +
+    `\n` +
+    `If you installed with pnpm 10+, it blocked the build. Approve it and reinstall:\n` +
+    `  pnpm approve-builds -g\n` +
+    `  pnpm add -g toklume\n` +
+    `\n` +
+    `Building also needs a C++ toolchain (Debian/Ubuntu: sudo apt install -y build-essential python3).`
+  )
+}
+
+/**
  * Open the usage database, applying any pending migrations.
  *
  * Idempotent: safe to call on every command. Read-only opens never migrate,
@@ -25,6 +49,8 @@ export function openDb(options: OpenOptions = {}): Db {
     try {
       return new Database(path, { readonly: true, fileMustExist: true })
     } catch (err) {
+      const bindings = bindingsError(err)
+      if (bindings) throw new Error(bindings)
       throw new Error(
         `Cannot open database ${path} for reading: ${errorMessage(err)}\n` +
           `Run \`toklume sync\` first to create it.`,
@@ -38,6 +64,8 @@ export function openDb(options: OpenOptions = {}): Db {
   try {
     db = new Database(path)
   } catch (err) {
+    const bindings = bindingsError(err)
+    if (bindings) throw new Error(bindings)
     throw new Error(`Cannot open database ${path}: ${errorMessage(err)}`)
   }
 

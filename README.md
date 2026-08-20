@@ -20,12 +20,30 @@ toklume daily              # see it
 
 Requires Node >= 20. First sync reads your whole history; later syncs only read what changed.
 
+> **Seeing `Could not locate the bindings file`?** toklume's SQLite driver
+> (`better-sqlite3`) is a native module. It ships prebuilt binaries only up to Node 22, so on
+> Node 24 and newer it compiles from source at install time — which needs a working build
+> toolchain (`python3`, `make`, and a C++ compiler; on Debian/Ubuntu:
+> `sudo apt install -y build-essential python3`).
+>
+> On **pnpm 10 or newer** that build is also blocked by default, which produces the same
+> error. Approve it once — pnpm remembers:
+>
+> ```bash
+> pnpm approve-builds -g     # select better-sqlite3
+> pnpm add -g toklume        # reinstall to trigger the build
+> ```
+>
+> Watch the install output: it should print `better-sqlite3 install: ... gyp info ok`. If
+> pnpm instead says `Ignored build scripts: better-sqlite3`, the approval did not take.
+> npm and yarn run the build automatically and need only the toolchain.
+
 > **Install it globally (`-g`), or run it with `npx`/`pnpm dlx`.** toklume is a CLI, not a
 > library. Dropping the `-g` — `npm install toklume` or `pnpm install toklume` — makes a
 > *local* install, which creates `package.json`, `node_modules/`, and a lockfile in whatever
 > directory you happen to be in. Run that from your home directory and those files land in
-> `~`. That is standard npm/pnpm behavior for any package, not something toklume does; it
-> ships no install scripts. To clean it up, delete the files the install created:
+> `~`. That is standard npm/pnpm behavior for any package, not something toklume does. To
+> clean it up, delete the files the install created:
 >
 > ```bash
 > cd ~ && rm -rf node_modules package.json pnpm-lock.yaml
