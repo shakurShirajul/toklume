@@ -800,6 +800,10 @@ tbody tr:last-child td {
   background: color-mix(in srgb, var(--debit) 8%, transparent);
   padding: 0.6rem 0.8rem;
   margin-top: 1rem;
+  /* Errors carry multi-line remedies whose command lines must stay on their own
+     line to be readable and copyable; wrap long paths rather than overflow. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .empty {

@@ -52,6 +52,40 @@ Requires Node >= 20. First sync reads your whole history; later syncs only read 
 > Check that `package.json` lists nothing but toklume under `dependencies` before deleting —
 > if it has a `name` or `scripts` field, it is a real project of yours, so leave it alone.
 
+### Updating
+
+```bash
+npm update -g toklume      # or: pnpm update -g toklume
+toklume --version          # confirm the new version
+```
+
+Your database is not touched. It lives in your platform data directory
+(`~/.local/share/toklume/usage.db` on Linux), separate from the installed package, and the
+schema is unchanged — so history, sessions, and anything you built on top of the database
+survive the upgrade. There is no migration step to run.
+
+toklume never checks for updates on its own — it makes no network requests at all — so
+nothing will prompt you. Check what you have against the latest with:
+
+```bash
+toklume --version && npm view toklume version
+```
+
+If `toklume --version` still reports the old number after updating, you likely have a second
+copy earlier on your `PATH` (a common one: a pnpm global install shadowing an npm global
+install). `which toklume` shows which one wins.
+
+If updating leaves you with `Could not locate the bindings file`, the native module was
+never built. Approving it is not enough on its own — pnpm reports `Already up to date` and
+skips the rebuild, and `pnpm rebuild` does not trigger it either. Remove the package and
+install it again so the build actually runs:
+
+```bash
+pnpm approve-builds -g     # select better-sqlite3
+pnpm remove -g toklume
+pnpm add -g toklume
+```
+
 ## Commands
 
 | Command | What it does |
@@ -202,6 +236,18 @@ pnpm build
 
 pnpm --dir web install && pnpm --dir web build   # dashboard bundle
 ```
+
+To run your working copy without installing it globally:
+
+```bash
+node dist/cli/index.js sync
+node dist/cli/index.js daily
+node dist/cli/index.js web
+```
+
+`pnpm install` here runs `better-sqlite3`'s native build (the repo's
+`pnpm-workspace.yaml` already approves it), so a source checkout does not hit the
+bindings error a global pnpm install can. It still needs a C++ toolchain on Node 24+.
 
 Architecture, briefly: parsers turn raw log lines into `NormalizedEvent[]` and never touch the database; `core/scan.ts` owns incrementality for every parser; `db/queries.ts` is the only write path; `reports/` returns plain row arrays that both the CLI and the web server render. Adding a tool means writing one parser and registering it.
 

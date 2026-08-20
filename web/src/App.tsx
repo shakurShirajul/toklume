@@ -174,8 +174,20 @@ export default function App() {
         </button>
       </header>
 
-      {metaError && <p className="error">Cannot reach the local API: {metaError}</p>}
-      {syncError && <p className="error">Sync failed: {syncError}</p>}
+      {metaError && (
+        <p className="error">
+          <b>Cannot reach the local API</b>
+          {'\n'}
+          {metaError}
+        </p>
+      )}
+      {syncError && (
+        <p className="error">
+          <b>Sync failed</b>
+          {'\n'}
+          {syncError}
+        </p>
+      )}
 
       {meta && (
         <div className="meta-strip">
